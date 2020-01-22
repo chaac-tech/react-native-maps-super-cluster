@@ -57,6 +57,25 @@ export const boundingBoxToRegion = (bbox) => {
   }
 }
 
+export const getCoordinatesFromItem = (item, accessor, asArray = true) => {
+  let coordinates = []
+
+  if (typeof accessor === 'string') {
+    coordinates = [item[accessor].longitude, item[accessor].latitude]
+  } else if (typeof accessor === 'function') {
+    coordinates = accessor(item)
+  }
+
+  if (asArray) {
+    return coordinates
+  }
+
+  return {
+    latitude: coordinates[1],
+    longitude: coordinates[0]
+  }
+}
+
 /**
  * Compute a RFC-compliant GeoJSON Feature object
  * from the given JS object
@@ -65,6 +84,7 @@ export const boundingBoxToRegion = (bbox) => {
  * @param {Function|String} accessor - accessor for item coordinate values. Could be a string (field name) or a function (that describe how to access to coordinate data).
  * @returns {Object} - GeoJSON Feature object
  */
+
 // old code
 export const itemToGeoJSONFeature = (item) => ({
   type: 'Feature',
@@ -77,6 +97,7 @@ export const itemToGeoJSONFeature = (item) => ({
 
 // export const itemToGeoJSONFeature = (item, accessor) => {
 //   let coordinates = []
+
 
 //   if (typeof accessor === 'string') {
 //     coordinates = [item[accessor].longitude, item[accessor].latitude]
